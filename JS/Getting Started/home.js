@@ -1,17 +1,7 @@
-let btn = document.getElementById("see-review");
+"use strict";
 
-btn.addEventListener("click", function() {
+let containers = document.getElementsByClassName("container");
 
-    const review = document.getElementById("review");
+containers[0].classList.add("d-none");
 
-    if (review.classList.contains("d-none")) {
-        review.classList.remove("d-none");
-        btn.textContent = "Closed";
-    } else {
-        review.classList.add("d-none");
-        btn.textContent = "See";
-    }
-
-});
-
-showMessage(Math.random());
+console.log(containers);
