@@ -1,0 +1,35 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Popular Movies</h3>
+  </div>
+
+  <div class="panel-body">
+    <div *ngIf="popular" class="row">
+      <div
+        *ngFor="let movie of popular.results; let i = index"
+        class="col-md-2"
+      >
+        <app-movie [movie]="movie"></app-movie>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">In Theaters</h3>
+  </div>
+
+  <div class="panel-body">
+    <div *ngIf="theaters" class="row">
+      <div
+        *ngFor="let movie of theaters.results; let i = index"
+        class="col-md-2"
+      >
+        <div>
+          <app-movie *ngIf="i < 6" [movie]="movie"></app-movie>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
