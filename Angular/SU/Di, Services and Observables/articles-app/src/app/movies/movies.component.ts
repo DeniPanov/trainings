@@ -13,14 +13,25 @@ export class MoviesComponent implements OnInit {
   theaters!: Movie[];
   kids!: Movie[];
   dramas!: Movie[];
+  searchedText!: any;
+  isSearched: boolean = false;
 
   onClick(movie: any) {
     this.router.navigateByUrl(`/movie/${movie.id}`)
   }
 
+  search(myQuery: any){
+    let value = myQuery["search"];
+    
+    this.moviesService.findAMovie(value).subscribe(data => {
+      this.searchedText = data;
+      this.isSearched = true;
+      console.log(this.searchedText);      
+    });    
+  }
+
   constructor(
     private moviesService: MoviesService,
-    private route: ActivatedRoute,
     private router: Router
     ) {}
 

@@ -11,6 +11,7 @@ import {HttpClientModule} from "@angular/common/http";
 import { MovieComponent } from './movie/movie.component';
 import { RouterModule, Route } from '@angular/router';
 import { SelectedMovieComponent } from './selected-movie/selected-movie.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -27,8 +28,9 @@ import { SelectedMovieComponent } from './selected-movie/selected-movie.componen
     RouterModule.forRoot([
       {path: "", component: MoviesComponent},
       {path: "movie/:id", component: SelectedMovieComponent}
-    ])
-  ],
+    ]),
+    FormsModule
+  ] ,
   providers: [
     MoviesService
   ],

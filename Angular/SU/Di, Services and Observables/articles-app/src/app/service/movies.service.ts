@@ -18,10 +18,13 @@ export class MoviesService {
   authentication: string = '&api_key=';
   movie: string = "movie/";
   movieAuth: string = '?api_key=';
+  searchQuery: string = "search/movie?query=";
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient) {}
 
-   }
+   findAMovie(input: string) : Observable<Object>{
+      return this.http.get<Object>(`${this.path}${this.searchQuery}${input}${this.authentication}${apiKey}`);
+    }
 
    getPopular() : Observable<Movies>{
      return this.http.get<Movies>(`${this.path}${this.popular}${this.authentication}${apiKey}`);
