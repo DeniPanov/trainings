@@ -11,24 +11,12 @@ import { Recipe } from './recipe.model';
 export class RecipeService {
   recipesChanged = new Subject<Recipe[]>()
 
-  private recipes: Recipe[] = [
-    new Recipe(
-      "Spaghetti",
-       "ItalianFood",
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Spaghetti_spiral%2C_2008.jpg/126px-Spaghetti_spiral%2C_2008.jpg",
-        [
-          new Ingredient ("Pasta", 1),
-          new Ingredient ("Tomatos", 3)
-        ]
-    ), new Recipe(
-      "Spaghetti",
-       "Another italianFood",
-       "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Spaghetti_spiral%2C_2008.jpg/126px-Spaghetti_spiral%2C_2008.jpg",
-       [
-        new Ingredient ("Pasta", 1),
-        new Ingredient ("Parmegano", 1)
-       ])
-  ];
+  private recipes: Recipe[] = [];
+
+  setRecipes(recipes: Recipe[]) {
+    this.recipes = recipes;
+    this.recipesChanged.next(this.recipes.slice());
+  }
 
   getRecipes() {
     return this.recipes.slice();
