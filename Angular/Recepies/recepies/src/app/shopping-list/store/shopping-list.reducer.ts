@@ -3,8 +3,7 @@ import * as slActions from './shopping-list.actions';
 import { ShoppingListState } from './shopping-list.state';
 
 const initialState = {
-  ingredients: [new Ingredient('Apples', 5), new Ingredient('Oranges', 10)],
-  id: 1
+  ingredients: [new Ingredient('Apples', 5), new Ingredient('Oranges', 10)]
 };
 
 export function shoppingListReducer(

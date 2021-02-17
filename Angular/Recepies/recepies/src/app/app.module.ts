@@ -11,8 +11,6 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { reducers } from './shopping-list/store/const';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { shoppingListReducer } from './shopping-list/store/shopping-list.reducer';
-// import { StoreFiles } from "./shopping-list/store/index";
 
 
 
@@ -22,7 +20,7 @@ import { shoppingListReducer } from './shopping-list/store/shopping-list.reducer
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    StoreModule.forRoot(shoppingListReducer),
+    StoreModule.forRoot(reducers),
     SharedModule,
     CoreModule,
     StoreDevtoolsModule.instrument({

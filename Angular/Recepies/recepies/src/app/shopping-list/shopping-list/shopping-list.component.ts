@@ -4,7 +4,7 @@ import { Subscription, Observable } from 'rxjs';
 
 import { Ingredient } from '../../shared/ingredient.model';
 import { ShoppingService } from '../shopping.service';
-import { ShoppingListState } from '../store/shopping-list.state';
+import { selectors, ShoppingListState } from '../store/shopping-list.state';
 
 @Component({
   selector: 'app-shopping-list',
@@ -12,7 +12,7 @@ import { ShoppingListState } from '../store/shopping-list.state';
   styleUrls: ['./shopping-list.component.css'],
 })
 export class ShoppingListComponent implements OnInit, OnDestroy {
-  ingredients: Observable<Ingredient[]>;
+  ingredients$: Observable<Ingredient[]>;
   private subscription: Subscription;
 
   constructor(
@@ -21,11 +21,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.ingredients = this.store.select("ingredients");
-
-    // this.store.select('ingredients') .subscribe((data: Ingredient[]) => {
-    //   this.ingredients = data;
-    // });
+    this.ingredients$ = this.store.select(selectors.selectIngredients);
 
     // this.ingredients = this.slService.getIngredients();
     // this.subscription = this.slService.ingredientsChanged.subscribe(
