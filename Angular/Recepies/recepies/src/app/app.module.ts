@@ -9,7 +9,12 @@ import { CoreModule } from './core.module';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
+import { reducers } from './shopping-list/store/const';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { shoppingListReducer } from './shopping-list/store/shopping-list.reducer';
+// import { StoreFiles } from "./shopping-list/store/index";
+
+
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -17,6 +22,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    StoreModule.forRoot(shoppingListReducer),
     SharedModule,
     CoreModule,
     StoreDevtoolsModule.instrument({
