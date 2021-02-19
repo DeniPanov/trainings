@@ -3,8 +3,14 @@ import { Ingredient } from "src/app/shared/ingredient.model";
 
 export const FEATURE_NAME = "shoppingList";
 
+export interface AppState {
+    shoppingList: ShoppingListState
+}
+
 export interface ShoppingListState {
-    ingredients: Ingredient[]
+    ingredients: Ingredient[],
+    editedIngredient: Ingredient,
+    editedIngredientIndex: number,
 }
 
 export namespace selectors {

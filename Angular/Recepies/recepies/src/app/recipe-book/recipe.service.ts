@@ -6,7 +6,7 @@ import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingService } from '../shopping-list/shopping.service';
 import { Recipe } from './recipe.model';
 import * as slActions from '../shopping-list/store/shopping-list.actions';
-import { ShoppingListState } from '../shopping-list/store/shopping-list.state';
+import * as fromShoppingList from "../shopping-list/store/shopping-list.state";
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,7 @@ export class RecipeService {
 
   constructor(
     private slService: ShoppingService,
-    private store: Store<ShoppingListState>
+    private store: Store<fromShoppingList.AppState>
   ) {}
 
   setRecipes(recipes: Recipe[]) {
