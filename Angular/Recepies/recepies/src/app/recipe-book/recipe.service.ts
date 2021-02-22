@@ -5,7 +5,7 @@ import { Subject } from 'rxjs/internal/Subject';
 import { Ingredient } from '../shared/ingredient.model';
 import { Recipe } from './recipe.model';
 import * as slActions from '../shopping-list/store/shopping-list.actions';
-import * as fromShoppingList from "../shopping-list/store/shopping-list.state";
+import { AppState } from '../store/app-main.store';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +15,7 @@ export class RecipeService {
   private recipes: Recipe[] = [];
 
   constructor(
-    private store: Store<fromShoppingList.AppState>
+    private store: Store<AppState>
   ) {}
 
   setRecipes(recipes: Recipe[]) {

@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { AuthComponent } from './auth.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
+import { AuthStoreModule } from './auth-store.module';
+
+import { AuthComponent } from './auth.component';
 
 @NgModule({
   declarations: [AuthComponent],
@@ -15,6 +16,7 @@ import { SharedModule } from '../shared/shared.module';
       {path: "", component: AuthComponent}
     ]),
     SharedModule,
+    AuthStoreModule
   ]
 })
 export class AuthModule { }

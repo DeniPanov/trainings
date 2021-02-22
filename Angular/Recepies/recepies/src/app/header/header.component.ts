@@ -1,29 +1,44 @@
-import { Component, OnDestroy, OnInit} from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { AuthService } from '../auth/auth.service';
+import { selectors } from '../auth/store/auth-state';
+import { User } from '../auth/user-model';
 import { DataStorageService } from '../shared/data-storage.service';
+import { AppState } from '../store/app-main.store';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   userSubscription: Subscription;
-  isAuthenticated: boolean = false;
+  isAuthenticated$: Observable<boolean>;
   collapsed = true;
-  
-  constructor(private dsService: DataStorageService, private authService: AuthService) { }
+  userData$: Observable<User>;
+
+  constructor(
+    private dsService: DataStorageService,
+    private authService: AuthService,
+    private store: Store<AppState>
+  ) {}
 
   ngOnDestroy(): void {
     this.userSubscription.unsubscribe();
   }
-  
+
   ngOnInit(): void {
-    this.userSubscription = this.authService.userSub.subscribe(user => {
-      this.isAuthenticated = !user ? false : true;
-    });
+    // this.userSubscription = this.store
+    //   .select(selectors.selectUser)
+    //   // .pipe(map(state => state.user))
+    //   .subscribe((user) => {
+    //     this.isAuthenticated$
+    //   });
+
+    this.userData$ = this.store.select(selectors.selectUser);
   }
 
   onSaveData() {
@@ -36,5 +51,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onLogout() {
     this.authService.logout();
+  }
+
+  get IsAuthenticated(): boolean {
+    let isAuth: boolean;
+    
+    this.userData$.subscribe((data: User) => {
+      isAuth = data !== undefined && data !== null
+    })
+
+    return isAuth;
   }
 }

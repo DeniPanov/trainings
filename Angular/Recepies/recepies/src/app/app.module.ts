@@ -9,7 +9,7 @@ import { CoreModule } from './core.module';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { reducers } from './shopping-list/store/const';
+import { reducers } from './store/app-main.store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 
