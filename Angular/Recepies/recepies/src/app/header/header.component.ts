@@ -8,6 +8,7 @@ import { selectors } from '../auth/store/auth-state';
 import { User } from '../auth/user-model';
 import { DataStorageService } from '../shared/data-storage.service';
 import { AppState } from '../store/app-main.store';
+import * as AuthActions from "../auth/store/auth-actions";
 
 @Component({
   selector: 'app-header',
@@ -50,7 +51,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onLogout() {
-    this.authService.logout();
+    this.store.dispatch(new AuthActions.Logout());
   }
 
   get IsAuthenticated(): boolean {

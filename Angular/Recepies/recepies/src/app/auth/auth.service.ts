@@ -1,18 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, tap } from 'rxjs/operators';
-import { BehaviorSubject, throwError } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { User } from './user-model';
-import { Router } from '@angular/router';
 import { AppState } from '../store/app-main.store';
-import * as AuthActions from "./store/auth-actions";
+import * as AuthActions from './store/auth-actions';
 
-const apiKey = 'AIzaSyAMJMN1pId_EJEN1R4zeexKPShOSiyP6yA';
-const register =
+export const apiKey = 'AIzaSyAMJMN1pId_EJEN1R4zeexKPShOSiyP6yA';
+export const register =
   'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=';
-const login =
+export const login =
   'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=';
 
 export interface AuthResponseData {
@@ -32,48 +28,9 @@ export class AuthService {
   // userSub = new BehaviorSubject<User>(null);
   private tokenExpTimer: any;
 
-
-  constructor(private http: HttpClient, private router: Router, private store: Store<AppState>) {}
-
-  signup(email: string, password: string) {
-    return this.http
-      .post<AuthResponseData>(`${register}${apiKey}`, {
-        email: email,
-        password: password,
-        returnSecureToken: true,
-      })
-      .pipe(
-        catchError(this.handleError),
-        tap((restData) => {
-          this.handleAuthentication(
-            restData.email,
-            restData.localId,
-            restData.idToken,
-            Number(restData.expiresIn)
-          );
-        })
-      );
-  }
-
-  login(email: string, password: string) {
-    return this.http
-      .post<AuthResponseData>(`${login}${apiKey}`, {
-        email: email,
-        password: password,
-        returnSecureToken: true,
-      })
-      .pipe(
-        catchError(this.handleError),
-        tap((restData) => {
-          this.handleAuthentication(
-            restData.email,
-            restData.localId,
-            restData.idToken,
-            Number(restData.expiresIn)
-          );
-        })
-      );
-  }
+  constructor(
+    private store: Store<AppState>
+  ) {}
 
   autoLogin() {
     const userData = JSON.parse(localStorage.getItem('userData'));
@@ -91,14 +48,18 @@ export class AuthService {
 
     if (loadedUser.token) {
       //this.userSub.next(loadedUser);
-      this.store.dispatch(new AuthActions.Login({
-        email: loadedUser.email,
-        userId: loadedUser.id,
-        token: loadedUser.token,
-        expirationDate: new Date(userData._tokenExpirationDate)
-      }))
+      this.store.dispatch(
+        new AuthActions.AuthenticateSuccess({
+          email: loadedUser.email,
+          userId: loadedUser.id,
+          token: loadedUser.token,
+          expirationDate: new Date(userData._tokenExpirationDate),
+        })
+      );
 
-      const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
+      const expirationDuration =
+        new Date(userData._tokenExpirationDate).getTime() -
+        new Date().getTime();
       this.autoLogout(expirationDuration);
     }
   }
@@ -106,58 +67,18 @@ export class AuthService {
   logout() {
     // this.userSub.next(null);
     this.store.dispatch(new AuthActions.Logout());
-    
-    this.router.navigate(['/auth']);
-    localStorage.removeItem("userData");
+
+    localStorage.removeItem('userData');
     if (this.tokenExpTimer) {
       clearTimeout(this.tokenExpTimer);
     }
 
     this.tokenExpTimer = null;
-  }  
+  }
 
   autoLogout(expirationDuration: number) {
     this.tokenExpTimer = setTimeout(() => {
       this.logout();
     }, expirationDuration);
-  }
-
-  private handleAuthentication(
-    email: string,
-    userId: string,
-    token: string,
-    expiresIn: number
-  ) {
-    const expDate = new Date(new Date().getTime() + expiresIn * 1000);
-    const user = new User(email, userId, token, expDate);
-    //this.userSub.next(user);
-    this.store.dispatch(new AuthActions.Login({
-      email: email,
-      userId: userId,
-      token: token,
-      expirationDate: expDate
-    }));
-
-    this.autoLogout(expiresIn * 1000);
-    localStorage.setItem('userData', JSON.stringify(user));
-  }
-
-  private handleError(errorRes: HttpErrorResponse) {
-    let errorMessage = 'Unknown error occured!';
-    if (!errorRes.error || !errorRes.error.error) {
-      return throwError(errorMessage);
-    }
-    switch (errorRes.error.error.message) {
-      case 'EMAIL_EXISTS':
-        errorMessage = 'This email already exists!';
-        break;
-      case 'EMAIL_NOT_FOUND':
-        errorMessage = 'Invalid email or password!';
-        break;
-      case 'INVALID_PASSWORD':
-        errorMessage = 'Invalid email or password!';
-        break;
-    }
-    return throwError(errorMessage);
   }
 }
