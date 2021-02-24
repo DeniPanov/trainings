@@ -1,12 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { AlertComponent } from '../shared/alert/alert.component';
 
 import { AppState } from '../store/app-main.store';
-import { AuthService } from './auth.service';
 import * as AuthActions from './store/auth-actions';
 import { selectors } from './store/auth-state';
 
@@ -25,8 +23,6 @@ export class AuthComponent implements OnInit, OnDestroy {
   storeSub: Subscription;
 
   constructor(
-    private authService: AuthService,
-    private router: Router,
     private store: Store<AppState>
   ) {}  
 
@@ -55,7 +51,6 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   onHandleError() {
-    // this.error = null;
     this.store.dispatch(new AuthActions.ClearError());
   }
 
@@ -68,7 +63,6 @@ export class AuthComponent implements OnInit, OnDestroy {
     const password = form.value.password;
 
     if (this.isLoginMode) {
-      // authObservable = this.authService.login(email, password);
       this.store.dispatch(
         new AuthActions.AuthenticateStart({
           email: email,
@@ -88,7 +82,6 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   private showErrorAlert(message: string) {
-    // const alertCmp = new AlertComponent();
     const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(
       AlertComponent
     );
