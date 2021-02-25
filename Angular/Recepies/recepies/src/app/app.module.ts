@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { reducers } from './store/app-main.store';
 import { AuthEffects } from './auth/store/auth-effects';
+import { RecipeEffects } from './recipe-book/store/recipe.effects';
 
 
 
@@ -23,7 +24,7 @@ import { AuthEffects } from './auth/store/auth-effects';
     AppRoutingModule,
     HttpClientModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects, RecipeEffects]),
     SharedModule,
     CoreModule,
     StoreDevtoolsModule.instrument({
